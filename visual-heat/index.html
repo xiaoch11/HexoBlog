@@ -56,25 +56,25 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>HOME</span>
+                    <span>主页</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>TAGS</span>
+                    <span>标签</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>ARCHIVES</span>
+                    <span>存档</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>ABOUT</span>
+                    <span>关于</span>
                 </a>
             </li>
             
@@ -93,7 +93,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">search</span>
+            <span id="begin-search">搜索</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -116,9 +116,9 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">Post：<span>2019-01-16 09:51:10</span></span>
+        <span class="attr">发布于：<span>2019-01-16 09:51:10</span></span>
         
-        <span class="attr">Tags：/
+        <span class="attr">标签：/
         
         <a class="tag" href="/tags/#Canvas" title="Canvas">Canvas</a>
         <span>/</span>
@@ -128,7 +128,7 @@
         
         
         </span>
-        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
@@ -150,11 +150,11 @@
 <li>将圆形进行叠加</li>
 <li>以强度色谱进行颜色映射</li>
 </ol>
-<p>以上步骤中需要注意的是第2步，我们并非直接以强度色谱填充圆形，因为这样得到的颜色是3个维度的，在叠加的时候不是线性的。本文选取了<code>alpha</code>即颜色中的透明度作为表示强弱的维度，你也可以选取<code>r</code>或者<code>g</code>或者其他，后文会解释选择<code>alpha</code>的好处。</p>
+<p>以上步骤中需要注意的是第2步，我们并非直接以强度色谱填充圆形，因为重叠的时候颜色会相互覆盖而非线性叠加。本文选取了<code>alpha</code>即颜色中的透明度作为表示强弱的维度，虽然a通道并非严格的线性叠加，其大致为<code>a = a1 + a2 - a1 * a2</code>，但也可以满足我们的需求。</p>
 <h3 id="动手实现"><a href="#动手实现" class="headerlink" title="动手实现"></a>动手实现</h3><h4 id="绘制圆形"><a href="#绘制圆形" class="headerlink" title="绘制圆形"></a>绘制圆形</h4><p>Canvas 中绘制弧线或者圆形可以使用<code>arc()</code>方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arc(x, y, radius, startAngle, endAngle, anticlockwise)</span><br></pre></td></tr></table></figure></p>
 <p><code>x</code>和<code>y</code>对应到数据的坐标，<code>radius</code>可自由设置，<code>startAngle</code>和<code>endAngle</code>表示起止角度，分别取<code>0</code>和<code>2 * Math.PI</code>，<code>anticlockwise</code>表示是否逆时针，可不设置。</p>
 <h4 id="渐变色"><a href="#渐变色" class="headerlink" title="渐变色"></a>渐变色</h4><p>Canvas 中可以使用<code>canvasGradient</code>对象创建渐变色，分为直线渐变<code>createLinearGradient(x1, y1, x2, y2)</code>和径向渐变<code>createRadialGradient(x1, y1, r1, x2, y2, r2)</code>，我们采用后者。创建径向渐变色需要定义两个圆，颜色在两个圆之间的区域进行渐变，故而我们将两个圆心都设置在数据的坐标点，而第一个圆半径取0，第二个半径同我们需要绘制的圆形半径一致。</p>
-<p>然后我们需要通过<code>addColorStop(position, color)</code>定义在两个圆之间颜色渐变的规则。我们要达到的效果是颜色在某一个维度上的数值从中心随半径增加逐渐变小，而且同时，该维度的数值与数据的<code>value</code>正相关，否则所有数据点绘制出的图形都会一模一样。所以，我们选择<code>alpha</code>作为变化维度，因为我们可以使用<code>globalAlpha</code>来设置一个全局的透明度，这个透明度与<code>value</code>正相关，这样的话我们就可以统一使用<code>rgba(r,g,b,1)</code>和<code>rgba(r,g,b,0)</code>作为中心点和半径边缘的颜色。</p>
+<p>然后我们需要通过<code>addColorStop(position, color)</code>定义在两个圆之间颜色渐变的规则。我们要达到的效果是颜色在某一个维度上的数值从中心随半径增加逐渐变小，而且同时，该维度的数值与数据的<code>value</code>正相关，否则所有数据点绘制出的图形都会一模一样。我们选择了<code>alpha</code>作为变化维度，所以我们可以使用<code>globalAlpha</code>来设置一个全局的透明度，这个透明度与<code>value</code>正相关，这样的话我们就可以统一使用<code>rgba(r,g,b,1)</code>和<code>rgba(r,g,b,0)</code>作为中心点和半径边缘的颜色。</p>
 <p>那么我们通过以下代码来实现以上两个步骤：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * radius: 绘制半径，请自行设置</span><br><span class="line"> * min, max: 强弱阈值，可自行设置，也可取数据最小最大值</span><br><span class="line"> */</span><br><span class="line">data.forEach(point =&gt; &#123;</span><br><span class="line">    let &#123;x, y, value&#125; = point; </span><br><span class="line">    context.beginPath();</span><br><span class="line">    context.arc(x, y, radius, 0, 2 * Math.PI);</span><br><span class="line">    context.closePath();</span><br><span class="line">    </span><br><span class="line">    // 创建渐变色: r,g,b取值比较自由，我们只关注alpha的数值</span><br><span class="line">    let radialGradient = context.createRadialGradient(x, y, 0, x, y, radius);</span><br><span class="line">    radialGradient.addColorStop(0.0, &quot;rgba(0,0,0,1)&quot;);</span><br><span class="line">    radialGradient.addColorStop(1.0, &quot;rgba(0,0,0,0)&quot;);</span><br><span class="line">    context.fillStyle = radialGradient;</span><br><span class="line"></span><br><span class="line">    // 设置globalAlpha: 需注意取值需规范在0-1之间</span><br><span class="line">    let globalAlpha = (value - min) / (max - min);</span><br><span class="line">    context.globalAlpha = Math.max(Math.min(globalAlpha, 1), 0);</span><br><span class="line"></span><br><span class="line">    // 填充颜色</span><br><span class="line">    context.fill();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>在示例中<code>min</code>为0，<code>max</code>为数据最大值，至此，我们得到的图形如下：<br><img src="https://user-gold-cdn.xitu.io/2019/1/12/1683fd3bac3f61a5?w=300&amp;h=300&amp;f=png&amp;s=24997" alt="渐变圆形"></p>
 <h4 id="颜色映射"><a href="#颜色映射" class="headerlink" title="颜色映射"></a>颜色映射</h4><p>可见图中的透明度已能代表数据强弱及辐射效果，且在相交处进行了线性的叠加。我们现在要给图形上色，需要使用<code>ImageData</code>对象对图像进行像素操作，读取每个像素点的透明度，然后使用其映射后的颜色改写<code>ImageData</code>数值。</p>

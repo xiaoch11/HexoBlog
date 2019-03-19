@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录web学习之路，一步一个脚印">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        WebAR技术探索-导航中的应用 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/totoro.jpeg">
+        </div>
+        <div class="name">
+            <i>totoro</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-AR简介"><span class="toc-text">1. AR简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-技术难点"><span class="toc-text">2. 技术难点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-兼容性问题："><span class="toc-text">2.1 兼容性问题：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-获取视频流"><span class="toc-text">2.1.1 获取视频流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-获取设备转动角度"><span class="toc-text">2.1.2 获取设备转动角度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-WebGL三维作图"><span class="toc-text">2.2 WebGL三维作图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-定位的精确度和轨迹优化"><span class="toc-text">2.3 定位的精确度和轨迹优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-定位去噪"><span class="toc-text">2.3.1 定位去噪</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-初始点确定"><span class="toc-text">2.3.2 初始点确定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-3-基于路线的定位校正"><span class="toc-text">2.3.3 基于路线的定位校正</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-虚拟和现实的单位长度映射"><span class="toc-text">2.4 虚拟和现实的单位长度映射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-demo演示"><span class="toc-text">3. demo演示</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        WebAR技术探索-导航中的应用
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-03-19 09:40:55</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#AR" title="AR">AR</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#导航" title="导航">导航</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <p>本文探索在Web前端实现AR导航效果的前沿技术和难点。</p>
+<h2 id="1-AR简介"><a href="#1-AR简介" class="headerlink" title="1. AR简介"></a>1. AR简介</h2><blockquote>
+<p>增强现实（Augmented Reality，简称AR）：是一种实时地计算摄影机影像的位置及角度并加上相应图像、视频、3D模型的技术，这种技术的目标是在屏幕上把虚拟世界套在现实世界并进行互动。</p>
+</blockquote>
+<p>一般在web中实现AR效果的主要步骤如下：</p>
+<ol>
+<li>获取视频源</li>
+<li>识别marker</li>
+<li>叠加虚拟物体</li>
+<li>显示最终画面</li>
+</ol>
+<p>以上参考：<a href="http://web.jobbole.com/90914//" target="_blank" rel="noopener">如何通过 Web 技术实现一个简单但有趣的 AR 效果</a></p>
+<p>AR导航比较特殊的地方是，它并非通过识别marker来确定虚拟物体的叠加位置，而是通过定位将虚拟和现实联系在一起，主要步骤如下：</p>
+<ol>
+<li>获取视频源</li>
+<li>坐标系转换：<ol>
+<li>获取设备和路径的绝对定位</li>
+<li>计算路径中各标记点与设备间的相对定位</li>
+<li>在设备坐标系中绘制标记点</li>
+</ol>
+</li>
+<li>3D图像与视频叠加</li>
+<li>更新定位和设备方向，控制Three.js中的相机移动</li>
+</ol>
+<h2 id="2-技术难点"><a href="#2-技术难点" class="headerlink" title="2. 技术难点"></a>2. 技术难点</h2><p>如上文所述AR导航的主要步骤，其中难点在于：</p>
+<ol>
+<li>兼容性问题</li>
+<li>WebGL三维作图</li>
+<li>定位的精确度和轨迹优化</li>
+<li>虚拟和现实单位尺度的映射</li>
+</ol>
+<h3 id="2-1-兼容性问题："><a href="#2-1-兼容性问题：" class="headerlink" title="2.1 兼容性问题："></a>2.1 兼容性问题：</h3><p>不同设备不同操作系统以及不同浏览器带来的兼容性问题主要体现在对获取视频流和获取设备陀螺仪信息的支持上。</p>
+<h4 id="2-1-1-获取视频流"><a href="#2-1-1-获取视频流" class="headerlink" title="2.1.1 获取视频流"></a>2.1.1 获取视频流</h4><ol>
+<li><p>Navigator API兼容处理</p>
+<p> <code>navigator.getUserMedia()</code>已不推荐使用，目前新标准采用<code>navigator.mediaDevices.getUserMedia()</code>。可是不同浏览器对新方法的支持程度不同，需要进行判断和处理。同时，如果采用旧方法，在不同浏览器中方法名称也不尽相同，比如<code>webkitGetUserMedia</code>。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//不支持mediaDevices属性</span><br><span class="line">if (navigator.mediaDevices === undefined) &#123;</span><br><span class="line">  navigator.mediaDevices = &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//不支持mediaDevices.getUserMedia</span><br><span class="line">if (navigator.mediaDevices.getUserMedia === undefined) &#123;</span><br><span class="line">	navigator.mediaDevices.getUserMedia = function(constraints) &#123;</span><br><span class="line">		var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;</span><br><span class="line"></span><br><span class="line">		if(!getUserMedia) &#123;</span><br><span class="line">			return Promise.reject(new Error(&apos;getUserMedia is not implemented in this browser&apos;));</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		return new Promise(function(resolve, reject) &#123;</span><br><span class="line">			getUserMedia.call(navigator, constraints, resolve, reject);</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>参数兼容处理</p>
+<p> <code>getUserMedia</code>接收一个<code>MediaStreamConstraints</code>类型的参数，该参数包含两个成员<code>video</code>和<code>audio</code>。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var constraints = &#123;</span><br><span class="line">   	audio: true,</span><br><span class="line">	video: &#123;</span><br><span class="line">		width: &#123; </span><br><span class="line">			min: 1024,</span><br><span class="line">			ideal: 1280,</span><br><span class="line">			max: 1920</span><br><span class="line">		&#125;,</span><br><span class="line">		height: 720,</span><br><span class="line">		frameRate: &#123;</span><br><span class="line">			ideal: 10,</span><br><span class="line">			max: 15</span><br><span class="line">		&#125;,</span><br><span class="line">		facingMode: &quot;user&quot; // user/environment，设置前后摄像头</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 在使用WebAR导航时，需要调取后置摄像头，然而<code>facingMode</code>参数目前只有Firefox和Chrome部分支持，对于其他浏览器（微信、手Q、QQ浏览器）需要另一个参数<code>optional.sourceId</code>，传入设备媒体源的<code>id</code>。经测试，该方法在不同设备不同版本号的微信和手Q上表现有差异。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">if(MediaStreamTrack.getSources) &#123;</span><br><span class="line">	MediaStreamTrack.getSources(function (sourceInfos) &#123;</span><br><span class="line">		for (var i = 0; i != sourceInfos.length; ++i) &#123;</span><br><span class="line">			var sourceInfo = sourceInfos[i];</span><br><span class="line">			//这里会遍历audio,video，所以要加以区分  </span><br><span class="line">			if (sourceInfo.kind === &apos;video&apos;) &#123;  </span><br><span class="line">				exArray.push(sourceInfo.id);  </span><br><span class="line">			&#125;  </span><br><span class="line">		&#125;</span><br><span class="line">		constraints = &#123; </span><br><span class="line">			video: &#123;  </span><br><span class="line">				optional: [&#123;  </span><br><span class="line">					sourceId: exArray[1] //0为前置摄像头，1为后置</span><br><span class="line">				&#125;]  </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">	constraints = &#123; </span><br><span class="line">		video: &#123;</span><br><span class="line">			facingMode: &#123;</span><br><span class="line">				exact: &apos;environment&apos;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>操作系统的兼容性问题</p>
+<p> 由于苹果的安全机制问题，iOS设备任何浏览器都不支持getUserMedia()。所以无法在iOS系统上实现WebAR导航。</p>
+</li>
+<li><p>协议</p>
+<p> 出于安全考虑，Chrome47之后只支持HTTPS页面获取视频源。</p>
+</li>
+</ol>
+<h4 id="2-1-2-获取设备转动角度"><a href="#2-1-2-获取设备转动角度" class="headerlink" title="2.1.2 获取设备转动角度"></a>2.1.2 获取设备转动角度</h4><p>设备的转动角度代表了用户的视角，也是连接虚拟和现实的重要参数。HTML5提供<code>DeviceOrientation API</code>可以实时获取设备的旋转角度参数。通过监听<code>deviceorientation</code>事件，返回<code>DeviceOrientationEvent</code>对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    absolute: [boolean] 是否为绝对转动值</span><br><span class="line">    alpha: [0-360]</span><br><span class="line">    beta: [-180-180]</span><br><span class="line">    gamma: [-90-90]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>alpha、beta、gamma</code>是我们想要获取的角度，它们各自的意义可以参照下图和参考文章：<br><img src="https://user-gold-cdn.xitu.io/2018/12/27/167ed31245f06e22?w=751&amp;h=208&amp;f=png&amp;s=80616" alt="陀螺仪"><br><a href="https://www.w3cplus.com/animation/html5-device-orientation-basic-intro.html" target="_blank" rel="noopener">陀螺仪的基本知识</a></p>
+<p>然而iOS系统的webkit内核浏览器中，该对象还包括<code>webkitCompassHeading</code>成员，其值为设备与正北方向的偏离角度。同时iOS系统的浏览器中，<code>alpha</code>并非绝对角度，而是以开始监听事件时的角度为零点。</p>
+<p>Android系统中，我们可以使用<code>-alpha</code>得到设备与正北方的角度，但是就目前的测试情况看来，该值并不稳定。所以在测试Demo中加入了手动校正<code>alpha</code>值的过程，在导航开始前将设备朝向正北方来获取绝对0度，虽然不严谨但效果还不错。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/12/27/167ed35465209848?w=2560&amp;h=1920&amp;f=png&amp;s=2800089" alt="手动校正alpha"></p>
+<h3 id="2-2-WebGL三维作图"><a href="#2-2-WebGL三维作图" class="headerlink" title="2.2 WebGL三维作图"></a>2.2 WebGL三维作图</h3><p>WebGL是在浏览器中实现三维效果的一套规范，AR导航需要绘制出不同距离不同角度的标记点，就需要三维效果以适应真实场景视频流。然而WebGL原生的接口非常复杂，Three.js是一个基于WebGL的库，它对一些原生的方法进行了简化封装，使我们能够更方便地进行编程。</p>
+<p>Three.js中有三个主要概念：</p>
+<ol>
+<li>场景（scene）：物体的容器，我们要绘制标记点就是在场景中添加指定坐标和大小的球体</li>
+<li>相机（camera）：模拟人的眼睛，决定了呈现哪个角度哪个部分的场景，在AR导航中，我们主要通过相机的移动和转动来模拟设备的移动和转动</li>
+<li>渲染器（renderer）：设置画布，将相机拍摄的场景呈现在web页面上</li>
+</ol>
+<p>在AR导航的代码中，我对Three.js的创建过程进行了封装，只需传入DOM元素（一般为<code>&lt;div&gt;</code>，作为容器）和参数，自动创建三大组件，并提供了<code>Three.addObject</code>和<code>Three.renderThree</code>等接口方法用于在场景中添加/删除物体或更新渲染等。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">function Three(cSelector, options) &#123;</span><br><span class="line">	var container = document.querySelector(cSelector);</span><br><span class="line">    // 创建场景</span><br><span class="line">    var scene = new THREE.Scene();</span><br><span class="line">    // 创建相机</span><br><span class="line">    var camera = new THREE.PerspectiveCamera(options.camera.fov, options.camera.aspect, options.camera.near, options.camera.far);</span><br><span class="line">    // 创建渲染器</span><br><span class="line">    var renderer = new THREE.WebGLRenderer(&#123;</span><br><span class="line">    	alpha: true</span><br><span class="line">    &#125;);</span><br><span class="line">    // 设置相机转动控制器</span><br><span class="line">    var oriControls = new THREE.DeviceOrientationControls(camera);</span><br><span class="line">    // 设置场景大小，并添加到页面中</span><br><span class="line">    renderer.setSize(container.clientWidth, container.clientHeight);</span><br><span class="line">    renderer.setClearColor(0xFFFFFF, 0.0);</span><br><span class="line">    container.appendChild(renderer.domElement);</span><br><span class="line"></span><br><span class="line">    // 暴露在外的成员</span><br><span class="line">    this.main = &#123;</span><br><span class="line">        scene: scene,</span><br><span class="line">        camera: camera,</span><br><span class="line">        renderer: renderer,</span><br><span class="line">        oriControls: oriControls,</span><br><span class="line">    &#125;</span><br><span class="line">    this.objects = [];</span><br><span class="line">    this.options = options;</span><br><span class="line">&#125;</span><br><span class="line">Three.prototype.addObject = function(type, options) &#123;...&#125; // 向场景中添加物体，type支持sphere/cube/cone</span><br><span class="line">Three.prototype.popObject = function() &#123;...&#125; // 删除场景中的物体</span><br><span class="line">Three.prototype.setCameraPos = function(position) &#123;...&#125; // 设置相机位置</span><br><span class="line">Three.prototype.renderThree = function(render) &#123;...&#125; // 渲染更新，render为回调函数</span><br><span class="line">Three.prototype.setAlphaOffset = function(offset) &#123;..&#125; // 设置校正alpha的偏离角度</span><br></pre></td></tr></table></figure></p>
+<p>在控制相机的转动上，我使用了<code>DeviceOrientationControls</code>，它是Three.js官方提供的相机跟随设备转动的控制器，实现对<code>deviceorientation</code>的侦听和对<code>DeviceOrientationEvent</code>的欧拉角处理，并控制相机的转动角度。只需在渲染更新时调用一下<code>update</code>方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">three.renderThree(function(objects, main) &#123;</span><br><span class="line">    animate();</span><br><span class="line">    function animate() &#123;</span><br><span class="line">        window.requestAnimationFrame(animate);</span><br><span class="line">        main.oriControls.update();</span><br><span class="line">        main.renderer.render(main.scene, main.camera);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-3-定位的精确度和轨迹优化"><a href="#2-3-定位的精确度和轨迹优化" class="headerlink" title="2.3 定位的精确度和轨迹优化"></a>2.3 定位的精确度和轨迹优化</h3><p>我们的调研中目前有三种获取定位的方案：原生<code>navigator.geolocation</code>接口，腾讯前端定位组件，微信JS-SDK地理位置接口：</p>
+<ol>
+<li><p>原生接口</p>
+<p> <code>navigator.geolocation</code>接口提供了<code>getCurrentPosition</code>和<code>watchPosition</code>两个方法用于获取当前定位和监听位置改变。经过测试，Android系统中<code>watchPosition</code>更新频率低，而iOS中更新频率高，但抖动严重。</p>
+</li>
+<li><p>前端定位组件</p>
+<p> 使用前端定位组件需要引入JS模块（<code>https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js</code>），通过<br><code>qq.maps.Geolocation(key, referer)</code>构造对象，也提供<code>getLocation</code>和<code>watchPosition</code>两个方法。经过测试，在X5内核的浏览器（包括微信、手Q）中，定位组件比原生接口定位更加准确，更新频率较高。</p>
+</li>
+<li><p>微信JS-SDK地理位置接口</p>
+<p> 使用微信JS-SDK接口，我们可以调用室内定位达到更高的精度，但是需要绑定公众号，只能在微信中使用，仅提供<code>getLocation</code>方法，暂时不考虑。</p>
+<p> 综上所述，我们主要考虑在X5内核浏览器中的实现，所以选用腾讯前端定位组件获取定位。但是在测试中仍然暴露出了定位不准确的问题：</p>
+<ol>
+<li>定位不准导致虚拟物体与现实无法准确叠加</li>
+<li>定位的抖动导致虚拟标记点跟随抖动，移动视觉效果不够平稳</li>
+</ol>
+</li>
+</ol>
+<p>针对该问题，我设计了优化轨迹的方法，进行定位去噪、确定初始中心点、根据路径吸附等操作，以实现移动时的变化效果更加平稳且准确。</p>
+<h4 id="2-3-1-定位去噪"><a href="#2-3-1-定位去噪" class="headerlink" title="2.3.1 定位去噪"></a>2.3.1 定位去噪</h4><p>我们通过<code>getLocation</code>和<code>watchPosition</code>方法获取到的定位数据包含如下信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	accuracy: 65,</span><br><span class="line">	lat: 39.98333,</span><br><span class="line">	lng: 116.30133</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>accuracy</code>表示定位精度，该值越低表示定位越精确。假设定位精度在固定的设备上服从正态分布（准确来说应该是正偏态分布），统计整条轨迹点定位精度的均值<code>mean</code>和标准差<code>stdev</code>，将轨迹中定位精度大于<code>mean + （1~2） * stdev</code>的点过滤掉。或者采用箱型图的方法去除噪声点。</p>
+<h4 id="2-3-2-初始点确定"><a href="#2-3-2-初始点确定" class="headerlink" title="2.3.2 初始点确定"></a>2.3.2 初始点确定</h4><p>初始点非常重要，若初始点偏离，则路线不准确、虚拟现实无法重叠、无法获取到正确的移动路线。测试中我发现定位开始时获得的定位点大多不太准确，所以需要一段时间来确定初始点。</p>
+<p>定位开始，设置<code>N</code>秒用以获取初始定位。<code>N</code>秒钟获取到的定位去噪之后形成一个序列<code>track_denoise = [ loc0, loc1, loc2...]</code>，对该序列中的每一个点计算其到其他点的距离之和，并加上自身的定位精度，得到一个中心衡量值，然后取衡量值最小的点为起始点。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/12/27/167ed367a9c70f5b?w=485&amp;h=223&amp;f=png&amp;s=14646" alt="初始点纠偏"></p>
+<h4 id="2-3-3-基于路线的定位校正"><a href="#2-3-3-基于路线的定位校正" class="headerlink" title="2.3.3 基于路线的定位校正"></a>2.3.3 基于路线的定位校正</h4><p>基于设备始终跟随规划路线进行移动的假设，可以将定位点吸附到规划路线上以防止3D图像的抖动。</p>
+<p>如下图所示，以定位点到线段的映射点作为校正点。路线线段的选择依据如下：</p>
+<ol>
+<li>初始状态：以起始点与第二路线点之间的线段为当前线段，<code>cur = 0; P_cur = P[cur];</code></li>
+<li>在第<code>N</code>条线段上移动时，若映射长度（映射点与线段起点的距离）为负，校正点取当前线段的起点，线路回退至上一线段，<code>cur = N - 1; P_cur = P[cur];</code>；若映射长度大于线段长度，则校正点取当前线段的终点，线路前进至下一线段，<code>cur = N + 1; P_cur = P[cur];</code></li>
+<li>若当前线段与下一线段的有效范围有重叠区域（如下图绿色阴影区），则需判断定位点到两条线段的距离，以较短的为准，确定校正点和线路选择。</li>
+</ol>
+<p><img src="https://user-gold-cdn.xitu.io/2018/12/27/167ed376312500ec?w=541&amp;h=576&amp;f=png&amp;s=30398" alt="基于路线的定位纠偏"></p>
+<h3 id="2-4-虚拟和现实的单位长度映射"><a href="#2-4-虚拟和现实的单位长度映射" class="headerlink" title="2.4 虚拟和现实的单位长度映射"></a>2.4 虚拟和现实的单位长度映射</h3><p>WebGL中的单位长度与现实世界的单位长度并没有确定的映射关系，暂时还无法准确进行映射。通过测试，暂且选择1（米）：15（WebGL单位长度）。</p>
+<h2 id="3-demo演示"><a href="#3-demo演示" class="headerlink" title="3. demo演示"></a>3. demo演示</h2><p>演示视频：<a href="https://www.bilibili.com/video/av39118408/" target="_blank" rel="noopener">WebAR技术探索-导航中的应用</a></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

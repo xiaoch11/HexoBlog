@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录web学习之路，一步一个脚印">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        JavaScript命名规范 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/totoro.jpeg">
+        </div>
+        <div class="name">
+            <i>totoro</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JavaScript-命名规范"><span class="toc-text">JavaScript 命名规范</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        JavaScript命名规范
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-03-19 09:52:05</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h1 id="JavaScript-命名规范"><a href="#JavaScript-命名规范" class="headerlink" title="JavaScript 命名规范"></a>JavaScript 命名规范</h1><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>规范</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Class名</td>
+<td>大驼峰</td>
+<td>Map, LatLng</td>
+</tr>
+<tr>
+<td>常量</td>
+<td>大写字母，下划线连接</td>
+<td>NO_RESULTS</td>
+</tr>
+<tr>
+<td>属性</td>
+<td>小驼峰，名词/形容词<br><em>能力布尔值：able后缀<br></em>状态布尔值：动词过去式/进行式<br>*数组：List后缀</td>
+<td>center<br>draggable, visible<br>loaded/loading<br>layerList</td>
+</tr>
+<tr>
+<td>方法</td>
+<td>小驼峰，动词前缀<br>*判断：is前缀</td>
+<td>getCenter<br>isString, isUndefined</td>
+</tr>
+<tr>
+<td>事件名</td>
+<td>小写字母，单词拼接</td>
+<td>dragend, dblclick</td>
+</tr>
+<tr>
+<td>回调函数</td>
+<td>on前缀</td>
+<td>onLoad, onError</td>
+</tr>
+<tr>
+<td>私有成员</td>
+<td>_前缀</td>
+<td>_renderEngine</td>
+</tr>
+</tbody>
+</table>
+<p>常用动词：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">get 获取 / set 设置</span><br><span class="line">add 增加 / remove 删除</span><br><span class="line">insert 插入 / delete 移除</span><br><span class="line">increase 增加 / decrease 减少</span><br><span class="line">clean 清理 / clear 清楚</span><br><span class="line">create 创建 / destroy 销毁</span><br><span class="line">build 构建 / publish 发布</span><br><span class="line">begin 开始 / end 结束</span><br><span class="line">start 启动 / stop 停止 / finish 完成</span><br><span class="line">play 播放 / pause 暂停</span><br><span class="line">open 打开 / close 关闭</span><br><span class="line">read 读取 / write 写入</span><br><span class="line">load 载入 / save 保存</span><br><span class="line">backup 备份 / restore 恢复 / revert 复原</span><br><span class="line">split 分割 / merge 合并</span><br><span class="line">inject 注入 / extract 提取</span><br><span class="line">attach 附着 / detach 脱离</span><br><span class="line">bind 绑定 / unbind 解绑</span><br><span class="line">edit 编辑 / modify 修改</span><br><span class="line">select 选取 / mark 标记</span><br><span class="line">copy 复制 / paste 粘贴</span><br><span class="line">undo 撤销 / redo 重做</span><br><span class="line">index 索引 / sort 排序</span><br><span class="line">find 查找 / search 搜索</span><br><span class="line">encode 编码 / decode 解码</span><br><span class="line">encrypt 加密 / decrypt 解密</span><br><span class="line">parse 解析 / compile 编译</span><br><span class="line">pack 打包 / unpack 解包</span><br><span class="line">send 发送 / receive 接收</span><br><span class="line">refresh 刷新 / update 更新</span><br><span class="line">lock 锁定 / unlock 解锁</span><br><span class="line">submit 提交 / commit 提交</span><br><span class="line">push 推 / pull 拉</span><br><span class="line">expand 展开 / collapse 折叠</span><br><span class="line">enter 进入 / exit 退出</span><br><span class="line">abort 放弃 / quit 退出</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
