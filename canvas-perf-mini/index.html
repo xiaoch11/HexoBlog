@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录web学习之路，一步一个脚印">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        小程序Canvas性能优化实战 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/totoro.jpeg">
+        </div>
+        <div class="name">
+            <i>totoro</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#案例背景"><span class="toc-text">案例背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#需求："><span class="toc-text">需求：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题："><span class="toc-text">问题：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本实现"><span class="toc-text">基本实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式"><span class="toc-text">数据格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绘图API"><span class="toc-text">绘图API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交互实现"><span class="toc-text">交互实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化方法"><span class="toc-text">优化方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#避免不必要的画布状态改变"><span class="toc-text">避免不必要的画布状态改变</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#减少绘制物"><span class="toc-text">减少绘制物</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#降低重绘频率"><span class="toc-text">降低重绘频率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他注意"><span class="toc-text">其他注意</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化结果"><span class="toc-text">优化结果</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        小程序Canvas性能优化实战
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-05-27 16:55:23</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#Canvas" title="Canvas">Canvas</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="案例背景"><a href="#案例背景" class="headerlink" title="案例背景"></a>案例背景</h2><h3 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h3><ol>
+<li>在小程序中使用canvas组件绘制地铁图，地铁图包括地铁线路、站点图标、线及站点名称文字，绘制元素为线、圆、图片、文字。</li>
+<li>支持拖动平移和双指缩放。</li>
+</ol>
+<h3 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h3><p>小程序中的canvas性能有限，特别在交互的过程中不断触发重绘会引发严重卡顿。</p>
+<h2 id="基本实现"><a href="#基本实现" class="headerlink" title="基本实现"></a>基本实现</h2><p>在不考虑优化的情况下，先说说如何实现绘制和交互。</p>
+<h3 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h3><p>首先看看数据，服务返回的数据中每个元素都是独立的，包括该元素的样式及坐标<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 线路数据</span><br><span class="line">lineData = &#123; path: [x0, y0, x1, y1, ...], strokeColor, strokeWidth &#125;</span><br><span class="line"></span><br><span class="line">// 站点数据：分为普通站点和换乘站点</span><br><span class="line">// 普通站点绘制简单圆形</span><br><span class="line">stationData = &#123; x, y, r, fillColor, strokeColor, strokeWidth &#125;</span><br><span class="line">// 换乘站点绘制换乘图标（png图片）</span><br><span class="line">stationData_transfer = &#123; x, y, width, height &#125;</span><br><span class="line"></span><br><span class="line">// 线路名称</span><br><span class="line">lineNameData = &#123; text, x, y, fillColor &#125;</span><br><span class="line"></span><br><span class="line">// 站点名称</span><br><span class="line">stationNameData = &#123; text, x, y &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="绘图API"><a href="#绘图API" class="headerlink" title="绘图API"></a>绘图API</h3><p>绘制的时候遍历绘制元素数组，根据元素类型设置上下文样式，绘制及填充。接口参考：<a href="https://developers.weixin.qq.com/miniprogram/dev/api/CanvasContext.html。" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/api/CanvasContext.html。</a></p>
+<ul>
+<li>设置样式：setStrokeStyle, setFillStyle, setLineWidth, setFontSize</li>
+<li>绘制路线：moveTo, lineTo, stroke</li>
+<li>绘制站点：moveTo, arc, stroke, fill</li>
+<li>绘制图片：drawImage</li>
+<li>绘制文字：fillText</li>
+</ul>
+<h3 id="交互实现"><a href="#交互实现" class="headerlink" title="交互实现"></a>交互实现</h3><p>实现交互主要步骤如下：</p>
+<ol>
+<li>通过<code>bindtouchstart</code>、<code>bindtouchmove</code>、<code>bindtouchend</code>实现对用户拖动和双指缩放的监听，得到拖动位移向量、缩放比例，触发重绘</li>
+<li>绘制时通过<code>scale</code>和<code>translate</code>在不用对数据坐标进行处理的情况下实现缩放和平移</li>
+</ol>
+<p>最终得到的结果如下，平均渲染时长为<code>42.82</code>ms，真机（ios）验证：龟速移动，画面延迟非常大。</p>
+<img src="/canvas-perf-mini/before.gif" title="地铁图原始效果-ios">
+<h2 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h2><p>完全不了解canvas优化方案的同学可以先看看： <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas" target="_blank" rel="noopener">canvas的优化</a>。</p>
+<h3 id="避免不必要的画布状态改变"><a href="#避免不必要的画布状态改变" class="headerlink" title="避免不必要的画布状态改变"></a>避免不必要的画布状态改变</h3><p>参考<a href="http://taobaofed.org/blog/2016/02/22/canvas-performance/" target="_blank" rel="noopener">Canvas 最佳实践（性能篇）</a> ，绘图上下文是一个状态机，状态的改变是有一定开销的。画布状态改变这里主要指<code>strokeStyle</code>、<code>fillStyle</code>等样式的改变。</p>
+<p>如何减少这部分的开销呢？我们可以尽量让样式相同的元素放在一起进行一次性的绘制。观察一下数据可以发现，很多站点元素样式都是相同的，那么在绘制之前可以先做一次数据的聚合，将样式相同的数据组合成一条数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function mergeStationData(mapStation) &#123;</span><br><span class="line">  let mergedData = &#123;&#125;</span><br><span class="line"></span><br><span class="line">  mapStation.forEach(station =&gt; &#123;</span><br><span class="line">    let coord = `$&#123;station.x&#125;,$&#123;station.y&#125;,$&#123;station.r&#125;`</span><br><span class="line">    let stationStyle = `$&#123;station.fillColor&#125;|$&#123;station.strokeColor&#125;|$&#123;station.strokeWidth&#125;`</span><br><span class="line"></span><br><span class="line">    if (mergedData[stationStyle]) &#123;</span><br><span class="line">      mergedData[stationStyle].push(coord)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      mergedData[stationStyle] = [coord]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  return mergedData</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>聚合后，329条站点数据合并为24条，有效的减少了90%的冗余状态改变开销。修改之后测试一下，平均渲染时长降到了<code>20.48</code>ms，真机验证：移动稍快了一些，但画面仍有较高延迟。</p>
+<p>合并数据的时候需要注意，此应用场景下各站点是没有互相压盖的，而如果有压盖顺序的话，在合并时只能合并相邻且样式相同的数据。</p>
+<h3 id="减少绘制物"><a href="#减少绘制物" class="headerlink" title="减少绘制物"></a>减少绘制物</h3><ol>
+<li><p>筛除视野外的绘制物：</p>
+<p> 当用户在放大图像时，其实大部分绘制物都消失在了视野范围之外，避免绘制视野外的元素可以节省不必要的开销。点元素是比较容易判断是否在视野范围之外的，而站点、站点名、线路名都可以作为点元素处理；线路也可以计算出在视野范围内的部分线段，较为复杂，这里先不做处理。筛除掉视野外的绘制物之后测试一下，平均渲染时长<code>17.02</code>ms，真机验证：同上，没有太多变化。</p>
+</li>
+<li><p>筛除过小的绘制物：</p>
+<p> 当用户在缩小图像时，文字和站点会由于尺寸太小而看不大清，在不影响用户体验的前提下可以考虑直接去掉。根据测试，最终决定在显示比例小于30%时去除文字和站点，这个级别下的渲染时长从<code>22.12</code>ms，减少到了<code>9.68</code>ms。</p>
+</li>
+</ol>
+<img src="/canvas-perf-mini/scale.png" title="显示比例20%">
+<h3 id="降低重绘频率"><a href="#降低重绘频率" class="headerlink" title="降低重绘频率"></a>降低重绘频率</h3><p>虽然平均渲染时长已经低了很多，但是在交互时却仍有较高的延迟，这是因为每次<code>ontouchmove</code>都会将渲染任务加入到异步队列中，事件触发频率远高于每秒能够执行的渲染次数，导致渲染任务严重积压，不断滞后。在PC端一般使用<code>requestAnimationFrame</code>解决这个问题，小程序里没有，但是可以自己实现，参考<a href="http://web.zhaicool.net/1125.html" target="_blank" rel="noopener">微信小程序中使用requestAnimationFrame</a>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const requestAnimationFrame = function (callback, lastTime) &#123;</span><br><span class="line">  var lastTime;</span><br><span class="line">  if (typeof lastTime === &apos;undefined&apos;) &#123;</span><br><span class="line">    lastTime = 0</span><br><span class="line">  &#125;</span><br><span class="line">  var currTime = new Date().getTime();</span><br><span class="line">  var timeToCall = Math.max(0, 30 - (currTime - lastTime));</span><br><span class="line">  lastTime = currTime + timeToCall;</span><br><span class="line">  var id = setTimeout(function () &#123;</span><br><span class="line">    callback(lastTime);</span><br><span class="line">  &#125;, timeToCall);</span><br><span class="line">  return id;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const cancelAnimationFrame = function (id) &#123;</span><br><span class="line">  clearTimeout(id);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>PC端我们一般将渲染间隔控制在16ms左右，但是在小程序中考虑到性能限制，且移动端各机型性能不一，所以这里留了一些空间，控制在30ms，对应到30FPS左右。</p>
+<p>但如果一直循环调用也会造成静止状态下不必要的开销，所以可以在交互开始<code>ontouchstart</code>和结束<code>ontouchend</code>时分别开启、停止动画：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">animate(lastTime) &#123;</span><br><span class="line">  this.animateId = requestAnimationFrame((t) =&gt; &#123;</span><br><span class="line">    this.render()</span><br><span class="line">    this.animate(t)</span><br><span class="line">  &#125;, lastTime)</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">stop() &#123;</span><br><span class="line">  cancelAnimationFrame(this.animateId)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
+<p>修改之后真机验证一下：画面比较流程，有轻微卡顿，但不会延迟。</p>
+<h3 id="其他注意"><a href="#其他注意" class="headerlink" title="其他注意"></a>其他注意</h3><ol>
+<li>由于本例中缩放和平移状态是以绝对状态保存的，所以<code>scale</code>和<code>translate</code>要搭配<code>save</code>和<code>restore</code>一起使用；但也可以使用<code>setTransform</code>直接重置矩阵。从理论上看这样应该能节省开销，但实际测试并没什么效果，平均渲染时长在<code>18.12</code>ms。这个问题有待研究。</li>
+<li>小程序中避免使用<code>setData</code>保存与界面渲染无关的数据，以避免引起页面重绘。</li>
+</ol>
+<h2 id="优化结果"><a href="#优化结果" class="headerlink" title="优化结果"></a>优化结果</h2><p>经过以上优化，渲染时长从<code>42</code>降到了<code>17</code>ms左右，真机验证下安卓机型普遍非常流畅，体验很好；ios机型有轻微卡顿，且随着使用时长卡顿逐渐明显，后期可以深入研究下是否有内存管理的问题。</p>
+<img src="/canvas-perf-mini/after.gif" title="地铁图优化效果-ios">
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
