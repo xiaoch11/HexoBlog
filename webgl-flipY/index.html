@@ -56,25 +56,25 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>主页</span>
+                    <span>HOME</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>标签</span>
+                    <span>TAGS</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>存档</span>
+                    <span>ARCHIVES</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>关于</span>
+                    <span>ABOUT</span>
                 </a>
             </li>
             
@@ -82,7 +82,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#案例背景"><span class="toc-text">案例背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题分析"><span class="toc-text">问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题1-Y轴翻转是什么？为什么要翻转？"><span class="toc-text">问题1: Y轴翻转是什么？为什么要翻转？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题2-为什么Y轴翻转会导致瓦片错乱呢？"><span class="toc-text">问题2: 为什么Y轴翻转会导致瓦片错乱呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题3-为什么瓦片会倒置？"><span class="toc-text">问题3:为什么瓦片会倒置？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#案例背景"><span class="toc-text">案例背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题分析"><span class="toc-text">问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题1-Y轴翻转是什么？为什么要翻转？"><span class="toc-text">问题1: Y轴翻转是什么？为什么要翻转？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题2-为什么Y轴翻转会导致瓦片错乱呢？"><span class="toc-text">问题2: 为什么Y轴翻转会导致瓦片错乱呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题3-为什么瓦片会倒置？"><span class="toc-text">问题3: 为什么瓦片会倒置？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol>
 </div>
     
 </div>
@@ -93,7 +93,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">搜索</span>
+            <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -116,9 +116,9 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2019-08-02 17:47:30</span></span>
+        <span class="attr">Post：<span>2019-08-02 17:47:30</span></span>
         
-        <span class="attr">标签：/
+        <span class="attr">Tags：/
         
         <a class="tag" href="/tags/#Canvas" title="Canvas">Canvas</a>
         <span>/</span>
@@ -128,7 +128,7 @@
         
         
         </span>
-        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
@@ -152,7 +152,7 @@
 <p>所以实际上大纹理应该长如下这样：</p>
 <p><img src="./reality.png" alt="Y轴翻转后的大纹理"></p>
 <p>所以当使用纹理坐标左上角<code>(0, 1)</code>+左下角<code>(0, 0.75)</code>时，我们取到的是瓦片4的纹理，最终导致了瓦片错乱。</p>
-<h3 id="问题3-为什么瓦片会倒置？"><a href="#问题3-为什么瓦片会倒置？" class="headerlink" title="问题3:为什么瓦片会倒置？"></a>问题3:为什么瓦片会倒置？</h3><p>正确取得纹理坐标后，又出现了新的问题：</p>
+<h3 id="问题3-为什么瓦片会倒置？"><a href="#问题3-为什么瓦片会倒置？" class="headerlink" title="问题3: 为什么瓦片会倒置？"></a>问题3: 为什么瓦片会倒置？</h3><p>正确取得纹理坐标后，又出现了新的问题：</p>
 <p><img src="./bug.png" alt="瓦片倒置"></p>
 <p>瓦片在屏幕上显示出来是上下颠倒的，且这种情况只出现在chrome/firefox里，因为在这两个浏览器中我们使用了 <code>createImageBitmap</code> 将blob格式的图片转为了位图，而在safari浏览器（不支持 <code>createImageBitmap</code>）中我们将blob格式转为了 <code>Image</code> 对象，最终导致了这种差异，所以我们从 <code>ImageBitmap</code> 着手去定位问题原因。</p>
 <p><code>ImageBitmap</code> 表示位图图像，用于在canvas中绘制图像，相比较于 <code>Image</code> 其延迟较低，因为在执行 <code>texSubImage2D</code> 将 <code>Image</code> 绘制到纹理上时也会先将其转为 <code>ImageBitmap</code>：</p>
