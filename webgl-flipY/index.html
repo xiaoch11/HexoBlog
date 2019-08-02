@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录web学习之路，一步一个脚印">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        WebGL-Y轴翻转踩坑实录 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/totoro.jpeg">
+        </div>
+        <div class="name">
+            <i>totoro</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#案例背景"><span class="toc-text">案例背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题分析"><span class="toc-text">问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题1-Y轴翻转是什么？为什么要翻转？"><span class="toc-text">问题1: Y轴翻转是什么？为什么要翻转？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题2-为什么Y轴翻转会导致瓦片错乱呢？"><span class="toc-text">问题2: 为什么Y轴翻转会导致瓦片错乱呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题3-为什么瓦片会倒置？"><span class="toc-text">问题3:为什么瓦片会倒置？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        WebGL-Y轴翻转踩坑实录
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-08-02 17:47:30</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Canvas" title="Canvas">Canvas</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#WebGL" title="WebGL">WebGL</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="案例背景"><a href="#案例背景" class="headerlink" title="案例背景"></a>案例背景</h2><p>最近在开发基于 WebGL 的地图渲染API，实现自定义栅格图层（将地图切分为等大的正方形，并以图片进行拼接渲染）时，为了节省纹理上传的开销，将栅格瓦片集中绘制到一张纹理上，然后绘制时根据瓦片各自的纹理坐标取各自的纹理，大概示意图如下：</p>
+<p><img src="./schematic.png" alt="原理示意图"></p>
+<p>瓦片根据加载的先后顺序依次排列绘制到大纹理上，占位宽度一致，竖向排列。比如若瓦片大小为256px，那么瓦片1的位置为<code>{x:0, y:0}</code>, 瓦片2的位置为<code>{x:0, y:256}</code>。</p>
+<p>然后出现了一系列问题：1. 瓦片错乱：瓦片1的位置显示了瓦片4的内容；2. 瓦片内容倒置。</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>根据调试定位，发现问题的根源在于Y轴翻转。</p>
+<h3 id="问题1-Y轴翻转是什么？为什么要翻转？"><a href="#问题1-Y轴翻转是什么？为什么要翻转？" class="headerlink" title="问题1: Y轴翻转是什么？为什么要翻转？"></a>问题1: Y轴翻转是什么？为什么要翻转？</h3><p>先看看没有任何处理的情况下如何绘制纹理，我们绘制瓦片的基本顶点模型是一个中心在原点的正方形，对于每个顶点坐标，需要映射到一个纹理坐标（下图左），传给片元着色器，再使用 <code>texture2D()</code> 取纹理像素，这种情况下左上角顶点<code>(-1,1)</code>对应的纹理坐标为<code>(0,0)</code>。</p>
+<p><img src="./flipY.png" alt="Y轴翻转示意图"></p>
+<p>纹理坐标系与顶点坐标系的Y轴方向不同，进行坐标映射的时候会不方便，所以如果将纹理坐标系的Y轴翻转则能使坐标映射更容易（上图右）。</p>
+<p>WebGL 也提供了相应接口实现该功能， <code>WebGLRenderingContext.pixelStorei()</code> 是 WebGL 中用于描述像素存储模式的函数，其中 <code>UNPACK_FLIP_Y_WEBGL</code> 可以用于设置Y轴是否翻转：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 1表示翻转，0表示不翻转</span><br><span class="line">gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);</span><br></pre></td></tr></table></figure>
+<h3 id="问题2-为什么Y轴翻转会导致瓦片错乱呢？"><a href="#问题2-为什么Y轴翻转会导致瓦片错乱呢？" class="headerlink" title="问题2: 为什么Y轴翻转会导致瓦片错乱呢？"></a>问题2: 为什么Y轴翻转会导致瓦片错乱呢？</h3><p>如上文所述，首先需要通过 <code>texImage2D</code> 创建一个大纹理，然后使用 <code>texSubImage2D</code> 将瓦片绘制到大纹理上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// x, y 表示偏移量</span><br><span class="line">gl.texSubImage2D(gl.TEXTURE_2D, 0, x, y, gl.RGBA, gl.UNSIGNED_BYTE, image);</span><br></pre></td></tr></table></figure>
+<p>这个接口用于改变纹理中指定子区域的数据，可以类比于 <code>CanvasRenderingContext2D.drawImage()</code> ，我们平常使用 <code>drawImage</code> 时都是以左上角为原点进行偏移，所以想象中的大纹理是如下图所示的那样，瓦片1的左上角对应纹理坐标<code>(0, 1)</code>，左下角为<code>(0, 0.75)</code>，以此类推。</p>
+<p><img src="./imagine.png" alt="常规思维的大纹理"></p>
+<p>但实际上Y轴翻转并不只作用在片元着色器的纹理中，使用 <code>texImage2D</code> 创建大纹理时其像素存储模式就已经确定了，当执行 <code>texSubImage2D</code> 时也会对 <code>image</code> 的像素存储位置进行反转，其执行过程是这样：</p>
+<p><img src="./texSubImage2D.png" alt="texSubImage2D的执行过程"></p>
+<p>所以实际上大纹理应该长如下这样：</p>
+<p><img src="./reality.png" alt="Y轴翻转后的大纹理"></p>
+<p>所以当使用纹理坐标左上角<code>(0, 1)</code>+左下角<code>(0, 0.75)</code>时，我们取到的是瓦片4的纹理，最终导致了瓦片错乱。</p>
+<h3 id="问题3-为什么瓦片会倒置？"><a href="#问题3-为什么瓦片会倒置？" class="headerlink" title="问题3:为什么瓦片会倒置？"></a>问题3:为什么瓦片会倒置？</h3><p>正确取得纹理坐标后，又出现了新的问题：</p>
+<p><img src="./bug.png" alt="瓦片倒置"></p>
+<p>瓦片在屏幕上显示出来是上下颠倒的，且这种情况只出现在chrome/firefox里，因为在这两个浏览器中我们使用了 <code>createImageBitmap</code> 将blob格式的图片转为了位图，而在safari浏览器（不支持 <code>createImageBitmap</code>）中我们将blob格式转为了 <code>Image</code> 对象，最终导致了这种差异，所以我们从 <code>ImageBitmap</code> 着手去定位问题原因。</p>
+<p><code>ImageBitmap</code> 表示位图图像，用于在canvas中绘制图像，相比较于 <code>Image</code> 其延迟较低，因为在执行 <code>texSubImage2D</code> 将 <code>Image</code> 绘制到纹理上时也会先将其转为 <code>ImageBitmap</code>：</p>
+<blockquote>
+<p>不论是在 canvas 里绘制2d图像，还是在 WebGL 中创建纹理，当使用图像时浏览器会把图像做一次解码（decode）处理。这个解码也就是把图像的原始格式（比如 jpeg、png 等）统一转换为位图，即每个像素使用 RGB 或 RGBA 来描述。当图片尺寸比较大的时候，解码也会有一定的消耗，而且这个耗时是同步的。——《高性能 WebGL —— 使用 ImageBitmap 提升纹理性能》（<a href="http://www.jiazhengblog.com/blog/2019/03/24/3407/）" target="_blank" rel="noopener">http://www.jiazhengblog.com/blog/2019/03/24/3407/）</a></p>
+</blockquote>
+<p>同时 WebGL 规范里对 <code>ImageBitmap</code> 有一些特殊的描述，当介绍 <code>pixelStorei</code> 的三个参数：<code>UNPACK_FLIP_Y_WEBGL</code>、<code>UNPACK_PREMULTIPLY_ALPHA_WEBGL</code>、<code>UNPACK_COLORSPACE_CONVERSION_WEBGL</code> 时，明确说明了其对 <code>ImageBitmap</code> 无效，只能在创建 <code>ImageBitmap</code> 的时候就进行相应设置：</p>
+<blockquote>
+<p>If the TexImageSource is an ImageBitmap, then these three parameters will be ignored. Instead the equivalent ImageBitmapOptions should be used to create an ImageBitmap with the desired format.</p>
+</blockquote>
+<p>所以可以大胆猜测，<code>pixelStorei</code> 所指定的像素存储模式其实作用于将图像解码转为位图的预处理过程。当我们直接将位图绘制到纹理上时就没有这个预处理过程了，所以 <code>UNPACK_FLIP_Y_WEBGL</code> 参数失效了。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
+<li><code>UNPACK_FLIP_Y_WEBGL</code> 参数用于设置纹理像素存储模式中是否将Y轴翻转，翻不翻取决于你的顶点模型的坐标系方向，适合自己就好。在我们的应用场景里，顶点模型和图像坐标系是反的，所以需要将该参数设为1。</li>
+<li>使用 <code>texSubImage2D</code> 上传图片时同样受到 <code>UNPACK_FLIP_Y_WEBGL</code> 参数的影响。</li>
+<li>如果上传的图像是 <code>ImageBitmap</code> 对象，则在其创建时可通过 <code>ImageBitmapOptions</code> 中的 <code>imageOrientation</code>、<code>premultiplyAlpha</code>、<code>colorSpaceConversion</code> 三个参数让其与<code>pixelStorei</code> 中所设置的参数保持一致。</li>
+</ol>
+<p>最终使用自定义栅格图层实现手绘图叠加到地图上，完成效果如下：</p>
+<p><img src="./imageTileLayer.png" alt="自定义栅格图层实现手绘图叠加"></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

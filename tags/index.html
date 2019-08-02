@@ -56,25 +56,25 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>HOME</span>
+                    <span>主页</span>
                 </a>
             </li>
             <li class="active">
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>TAGS</span>
+                    <span>标签</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>ARCHIVES</span>
+                    <span>存档</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>ABOUT</span>
+                    <span>关于</span>
                 </a>
             </li>
             
@@ -89,7 +89,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">search</span>
+            <span id="begin-search">搜索</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -105,7 +105,7 @@
         <!-- Main Content -->
         <div id="tag_cloud" class="tags">
     
-    <a href="#Canvas" title="Canvas" rel="2">Canvas</a>
+    <a href="#Canvas" title="Canvas" rel="3">Canvas</a>
     
     <a href="#JavaScript" title="JavaScript" rel="3">JavaScript</a>
     
@@ -118,6 +118,8 @@
     <a href="#AR" title="AR" rel="1">AR</a>
     
     <a href="#导航" title="导航" rel="1">导航</a>
+    
+    <a href="#WebGL" title="WebGL" rel="1">WebGL</a>
     
 </div>
 
@@ -157,6 +159,20 @@
         <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
     </div>
     
+    <!-- <li class="listing-item">
+    <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+    <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+    </li> -->
+    <div class="post-preview">
+        <a href="/webgl-flipY/">
+            <h2 class="post-title">
+                WebGL-Y轴翻转踩坑实录
+            </h2>
+            
+        </a>
+        <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+    </div>
+    
 </div>
 
 <div class="one-tag-list">
@@ -169,9 +185,9 @@
     <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
     </li> -->
     <div class="post-preview">
-        <a href="/js-test/">
+        <a href="/js-name/">
             <h2 class="post-title">
-                JavaScript单元测试框架
+                JavaScript命名规范
             </h2>
             
         </a>
@@ -197,9 +213,9 @@
     <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
     </li> -->
     <div class="post-preview">
-        <a href="/js-name/">
+        <a href="/js-test/">
             <h2 class="post-title">
-                JavaScript命名规范
+                JavaScript单元测试框架
             </h2>
             
         </a>
@@ -305,6 +321,27 @@
         <a href="/webar-navi/">
             <h2 class="post-title">
                 WebAR技术探索-导航中的应用
+            </h2>
+            
+        </a>
+        <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+    </div>
+    
+</div>
+
+<div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="WebGL">
+                    <span class="tag-text">WebGL</span>
+                </span>
+    
+    <!-- <li class="listing-item">
+    <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+    <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+    </li> -->
+    <div class="post-preview">
+        <a href="/webgl-flipY/">
+            <h2 class="post-title">
+                WebGL-Y轴翻转踩坑实录
             </h2>
             
         </a>
