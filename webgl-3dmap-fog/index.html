@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录web学习之路，一步一个脚印">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        WebGL-3D地图大俯仰角的雾化处理 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/totoro.jpeg">
+        </div>
+        <div class="name">
+            <i>totoro</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题背景"><span class="toc-text">问题背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#瓦片加载限制"><span class="toc-text">瓦片加载限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#雾化处理"><span class="toc-text">雾化处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根据深度进行雾化"><span class="toc-text">根据深度进行雾化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#深度纹理"><span class="toc-text">深度纹理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#深度计算"><span class="toc-text">深度计算</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题总结"><span class="toc-text">问题总结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        WebGL-3D地图大俯仰角的雾化处理
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-09-26 15:46:11</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#Canvas" title="Canvas">Canvas</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#WebGL" title="WebGL">WebGL</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <blockquote>
+<p>导语：除了画布宽高之外，3D地图的可视范围还受到俯仰角、旋转角度的影响。在大俯仰角情况下，为了降低瓦片加载和渲染的耗时，在地图远端不加载瓦片，瓦片边缘会变得非常突兀。所以需要对瓦片边缘进行雾化处理，实现渐隐效果，优化用户体验。</p>
+</blockquote>
+<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>地图的渲染原理请自行了解：<a href="https://www.cnblogs.com/dojo-lzz/p/9250637.html" target="_blank" rel="noopener">Web地图呈现原理</a>，其中重点了解地图数据以瓦片为单位进行加载和绘制这一点即可。在3D地图中，由于有俯仰角和水平旋转角的存在，墨卡托投影上的可视范围与可视窗口大小并不相同，会呈现一个梯形：</p>
+<p><img src="./projection.png" alt="3D投影变换"></p>
+<p>当俯仰角增大时，梯形上半部分会快速扩大，导致加载的瓦片过多而影响性能，所以需要对远端瓦片进行截断。而截断后边缘比较突兀，所以需要对边缘做雾化处理，优化体验，如下图。</p>
+<p><img src="./example.png" alt="瓦片截断和雾化处理"></p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="瓦片加载限制"><a href="#瓦片加载限制" class="headerlink" title="瓦片加载限制"></a>瓦片加载限制</h3><p><em>注：下文涉及到3D世界中各坐标系统的相互转换，需提前了解<a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/08%20Coordinate%20Systems/" title="OpenGL坐标系统" target="_blank" rel="noopener">OpenGL坐标系统</a>，以及略懂线性代数，否则可能晕头转向不知所云（画图太麻烦了，见谅）。</em></p>
+<p>在投影空间中地图的俯仰角变化所引起的可视范围的变化如下图左侧所示，45度时瓦片加载数量大约为0度时的1.5倍，并且随着俯仰角增大而快速上涨。为了减少瓦片加载数量，必须舍弃一部分瓦片。考虑到透视投影造成的近大远小，远端的瓦片被压缩后可分辨度很低，所以可以舍弃，即对可视空间的顶部进行裁切。</p>
+<p><img src="./clipspace.png" alt="可视空间裁切"></p>
+<p>如何裁切，这里需要先介绍一下可视范围的计算方法。在不考虑裁切的情况下，可视区域的四个顶点均在地图平面（<code>z_world=0</code>平面）上，即顶点在<strong>世界空间</strong>内的坐标可表示为<code>(x_world, y_world, 0, 1)</code>，然后经过与视图投影矩阵相乘得到<strong>裁剪空间</strong>坐标，裁剪空间可简单映射到<strong>屏幕空间</strong>。所以可反推回去，通过屏幕空间的四个顶点，映射到裁剪空间坐标，与视图投影矩阵的逆矩阵相乘后可得到可视区域的四个顶点坐标。其中较难理解的是裁剪空间的<code>z_clip</code>值无法确定，可以取-1和1两个值，逆变换后可得到两个世界坐标确定一条直线，该线与<code>z_world=0</code>平面的交点即最终的顶点坐标。</p>
+<p>所以如果要裁切，由上图所示，在世界空间内我们切掉的是顶部梯形阴影部分，所对应到屏幕空间切掉的是顶部矩形阴影部分，那么我们需要得到屏幕空间的一条水平裁切线，即图中的y值。假如以45度时的梯形上半高度为标准，通过简单的几何计算可得其为<code>1.93185 * view.top</code>，可近似为<code>2 * view.top</code>，那么可取世界坐标<code>(0, 2 * view.top, 0, 1)</code>作为<strong>裁切点</strong>，将其变换到屏幕空间<code>(x_screen, y_screen)</code>即可得到y值，记为<code>fogEdge</code>。之后再根据上文所述的逆变换，使用<code>(0,y), (1,y), (0,1), (1,1)</code>四个顶点反推可视区域的四个顶点。</p>
+<p>至此我们得到的俯仰角70度时的瓦片加载效果如下图：<br><img src="./clipped.png" alt="瓦片加载限制效果图"></p>
+<h3 id="雾化处理"><a href="#雾化处理" class="headerlink" title="雾化处理"></a>雾化处理</h3><p>雾化并不难理解，其本质上是一种颜色混合，将本色与雾色（为了适应个性化的地图样式我们使用的雾色与大地颜色保持一致）进行混合。随着混合因子的变化实现渐变效果。可参考<a href="https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-fog.html" title="WebGL 雾" target="_blank" rel="noopener">WebGL 雾</a>，着色器代码如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gl_FragColor = originalColor * (1.0 - fogFactor) + fogColor * fogFactor;</span><br></pre></td></tr></table></figure></p>
+<p>地图是分图层绘制的，若在每个图层的着色器中实现雾化逻辑实在过于冗杂，所以后处理方式更为合理。所谓后处理，即在帧缓冲中绘制完毕后，将缓冲关联的纹理作为输入进行图像处理。为了让渐变效果更平滑，可以使用<code>smoothstep</code>函数让雾化因子从0平滑过渡到1，如下图所示：</p>
+<p><img src="./fogfactor_1.png" alt="雾化因子-单侧渐变"></p>
+<p>着色器代码为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">float fogFactor = 1. - smoothstep(fogEdge, fogEdge + fogRange, y_screen);</span><br></pre></td></tr></table></figure></p>
+<p>至此我们得到初步的雾化效果如下图：<br><img src="./fog_1.png" alt="雾化处理-雾"></p>
+<p>可见边缘已被雾完全遮盖了，但是顶部仍显空洞，可以加上一点蓝天的背景效果，可以使用纹理也可以使用纯色，仍然也需要一个渐变过程，雾化因子变化如下：</p>
+<p><img src="./fogfactor_2.png" alt="雾化因子-双侧渐变"></p>
+<p>得到效果图如下：<br><img src="./fog_2.png" alt="雾化处理-蓝天背景"></p>
+<h3 id="根据深度进行雾化"><a href="#根据深度进行雾化" class="headerlink" title="根据深度进行雾化"></a>根据深度进行雾化</h3><p><em>注：以下内容涉及到深度测试，需提前了解<a href="https://learnopengl-cn.readthedocs.io/zh/latest/04%20Advanced%20OpenGL/01%20Depth%20testing/" title="OpenGL深度测试" target="_blank" rel="noopener">OpenGL深度测试</a>，否则可能晕头转向不知所云。</em></p>
+<p>以上是直接根据纹理纵向坐标计算雾化因子，虽然效果已符合预期，但仍有不合理之处。比如楼块，如果楼块过高，就算其距离视点较近，其顶部仍然会被雾化，不符合自然认知。所以雾化因子应根据深度值进行计算。</p>
+<p><img src="./building_1.png" alt="建筑顶部被雾化"></p>
+<h4 id="深度纹理"><a href="#深度纹理" class="headerlink" title="深度纹理"></a>深度纹理</h4><p>一般来说，帧缓冲区对象的深度关联对象为渲染缓冲区对象（renderbuffer object），而渲染缓冲区是无法传入着色器进行读取的，所以需要关联到一个纹理对象。要让纹理对象支持深度值的写入，需要使用一个扩展<code>WEBGL_depth_text</code>，这个扩展使纹理支持<code>gl.DEPTH_COMPONENT</code>格式，同时能支持<code>gl.UNSIGNED_SHORT</code>和<code>gl.UNSIGNED_INT</code>类型，相应代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 开启深度纹理扩展</span><br><span class="line">if (!gl.getExtension(&quot;WEBGL_depth_texture&quot;)) &#123;</span><br><span class="line">	console.error(&quot;depth textures not supported&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 设置纹理大小</span><br><span class="line">gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT, width, height, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);</span><br></pre></td></tr></table></figure></p>
+<p>在帧缓冲上绘制完毕后，将深度纹理传入着色器，将其可视化可得到下图（图中仅对需要雾化的部分读取了深度值进行展示）：<br><img src="./depth_1.png" alt="深度纹理"></p>
+<h4 id="深度计算"><a href="#深度计算" class="headerlink" title="深度计算"></a>深度计算</h4><p>如上图所示，虽然我们能够获取到深度纹理，但这个深度纹理是不完善的，在没有楼块的地方是一片空白，说明深度值为1即没有写入深度。这是因为：(1) 为了避免深度冲突，除了建筑物之外其他图层绘制时都关闭了深度测试，所以并没有写入深度值；(2) 即使在其他图层上开启了深度测试，使用背景色的地面是没有绘制物的，仍然没有深度值。简单来说，即目前无法获取到大地平面的深度值。</p>
+<p>如何获取到大地平面的深度值？其实深度值是可以计算的，参考<a href="http://www.songho.ca/opengl/gl_projectionmatrix.html" title="OpenGL 投影矩阵" target="_blank" rel="noopener">OpenGL 投影矩阵</a>。不过并不需要知道它的具体公式，只需要了解到透视投影下深度值与观察空间中的<code>1/z_view</code>是成正比的，即<code>depth = A * (1 / z_view) + B</code>。另一方面，我们通过简单的几何计算可以得到：<br><img src="./yclip&amp;zview.png" alt="y_clip与z_view关系推导"></p>
+<p>由此可得大地平面在裁剪空间中的坐标的y值<code>y_clip</code>与深度值<code>depth</code>是成正比关系的，即<code>depth = E * y_clip + F</code>。那么就可以选择两个平面上的坐标点，比如点1<code>(0, 0, 0, 1)</code>和点2<code>(0, 2 * view.top, 0, 1)</code>，通过视图投影矩阵得到<code>(0, 0, z_clip_1, 1)</code>和<code>(x_clip_2, y_clip_2, z_clip_2, 1)</code>，再根据<code>depth = (z_clip + 1) / 2</code>得到<code>depth_1</code>和<code>depth_2</code>，两个方程联立求解即可得到<code>E</code>和<code>F</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">float getDepthFromY(float y_clip) &#123;</span><br><span class="line">	return min(mix(depth_1, depth_2, y_clip / y_clip_2), 1.);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此可以得到纹理上空白处的深度值了，结合从深度纹理中读取的数值，可视化如下：<br><img src="./depth_2.png" alt="雾化区域的深度值"></p>
+<p>雾化因子应相应修改为随深度变化：<br><img src="./fogfactor_3.png" alt="雾化因子与深度关系"></p>
+<p>得到最终的雾化效果如下图：<br><img src="./fog_3.png" alt="雾化处理-深度雾化"></p>
+<p>可以再看看此时的高楼效果：<br><img src="./building_2.png" alt="建筑顶部合理显示"></p>
+<p>动态效果参见附件视频。</p>
+<h2 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h2><ol>
+<li>无论是可视范围裁切还是深度计算都需要熟练掌握3D的各个空间之间的相互变换关系，需要正反双向思维能力</li>
+<li>雾化本质上是一种渐变的颜色混合，渐变的维度可自由把握</li>
+<li>透视投影下深度值与观察空间坐标的1/z成正比</li>
+<li>深度缓冲和模板缓冲一般是关联到renderbuffer对象，renderbuffer是无法传入着色器进行读取的，在这里使用了texture对象替代了renderbuffer用于存储深度值，在其他应用场景下也可以直接通过着色器绘制深度或模板到颜色缓冲上，提供更高的精度，也能实现更加自定义的功能</li>
+</ol>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
