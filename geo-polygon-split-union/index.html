@@ -128,9 +128,9 @@
 <p>JSAPI GL近期为支持物流行业实现了几何图形编辑器，用户可通过编辑器接口进行点、线、面、圆的绘制和编辑。在物流行业中常见的使用场景是配送区域及地理围栏的绘制，常会有对已有区域进行拆分或者合并的需要，所以编辑器也提供了相应的功能。本文介绍了如何基于Turf实现多边形的拆分及合并。</p>
 </blockquote>
 <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><h3 id="多边形的拆分合并"><a href="#多边形的拆分合并" class="headerlink" title="多边形的拆分合并"></a>多边形的拆分合并</h3><p>多边形的拆分是指将多边形沿着线切分为几个多边形。如下图所示，不仅可以沿线一分为二，当线与多边形有多段相交时也可以分为多份，另外当多边形带洞（环多边形）时也可以在拆分后保持洞的形状。</p>
-<p><img src="./split_demo.gif.gif" alt="多边形拆分示例"></p>
+<p><img src="./split_demo.gif" alt="多边形拆分示例"></p>
 <p>多边形的合并是指将多个多边形合并为一个多边形，其前提条件是多边形之间有交叉区域或者共边。如下图所示，完全共边或者部分共边都可以合并，当有交叉时会贯通交叉部分。</p>
-<p><img src="./union_demo.gif.gif" alt="多边形合并示例"></p>
+<p><img src="./union_demo.gif" alt="多边形合并示例"></p>
 <h3 id="Turf-js"><a href="#Turf-js" class="headerlink" title="Turf.js"></a>Turf.js</h3><p>不难发现，多边形的拆分合并中会有大量且复杂的几何计算，包括点、线、面相互之间的相交、包含等计算。不过我们并不需要造轮子，可以使用Turf.js完成大部分的基础计算。Turf是由mapbox推出的空间几何计算库，常用于地理空间内的几何关系分析，功能非常强大，具体功能可见<a href="https://turfjs.org/" target="_blank" rel="noopener">Turf.js | Advanced geospatial analysis</a>。</p>
 <p>可是Turf.js目前还没有提供多边形的拆分方法，另外多边形的合并虽然已有<code>union</code>方法，但在实际应用中也无法很好解决部分共边的多边形的合并问题，所以只能在Turf的基础上自行实现符合业务需求的拆分合并功能。</p>
 <h2 id="多边形的拆分"><a href="#多边形的拆分" class="headerlink" title="多边形的拆分"></a>多边形的拆分</h2><h3 id="基础方案"><a href="#基础方案" class="headerlink" title="基础方案"></a>基础方案</h3><p>多边形拆分的核心思想是找到切割点，所以线对面的切割可以简化为线对线的切割。两条线互相切割得到子线段，将子线段互相组合形成多边形。</p>
