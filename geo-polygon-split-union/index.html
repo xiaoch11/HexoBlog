@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录web学习之路，一步一个脚印">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        几何计算-基于Turf.js实现多边形的拆分及合并 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/totoro.jpeg">
+        </div>
+        <div class="name">
+            <i>totoro</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-text">背景介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多边形的拆分合并"><span class="toc-text">多边形的拆分合并</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Turf-js"><span class="toc-text">Turf.js</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多边形的拆分"><span class="toc-text">多边形的拆分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础方案"><span class="toc-text">基础方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决切割点不一致问题"><span class="toc-text">解决切割点不一致问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决外部多边形问题"><span class="toc-text">解决外部多边形问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环多边形的拆分"><span class="toc-text">环多边形的拆分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多边形的合并"><span class="toc-text">多边形的合并</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#turf-union"><span class="toc-text">turf.union</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部分共边多边形的合并"><span class="toc-text">部分共边多边形的合并</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#产品推广"><span class="toc-text">产品推广</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        几何计算-基于Turf.js实现多边形的拆分及合并
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2020-01-13 10:54:23</span></span>
+        
+        
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <blockquote>
+<p>JSAPI GL近期为支持物流行业实现了几何图形编辑器，用户可通过编辑器接口进行点、线、面、圆的绘制和编辑。在物流行业中常见的使用场景是配送区域及地理围栏的绘制，常会有对已有区域进行拆分或者合并的需要，所以编辑器也提供了相应的功能。本文介绍了如何基于Turf实现多边形的拆分及合并。</p>
+</blockquote>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><h3 id="多边形的拆分合并"><a href="#多边形的拆分合并" class="headerlink" title="多边形的拆分合并"></a>多边形的拆分合并</h3><p>多边形的拆分是指将多边形沿着线切分为几个多边形。如下图所示，不仅可以沿线一分为二，当线与多边形有多段相交时也可以分为多份，另外当多边形带洞（环多边形）时也可以在拆分后保持洞的形状。</p>
+<p><img src="./split_demo.gif.gif" alt="多边形拆分示例"></p>
+<p>多边形的合并是指将多个多边形合并为一个多边形，其前提条件是多边形之间有交叉区域或者共边。如下图所示，完全共边或者部分共边都可以合并，当有交叉时会贯通交叉部分。</p>
+<p><img src="./union_demo.gif.gif" alt="多边形合并示例"></p>
+<h3 id="Turf-js"><a href="#Turf-js" class="headerlink" title="Turf.js"></a>Turf.js</h3><p>不难发现，多边形的拆分合并中会有大量且复杂的几何计算，包括点、线、面相互之间的相交、包含等计算。不过我们并不需要造轮子，可以使用Turf.js完成大部分的基础计算。Turf是由mapbox推出的空间几何计算库，常用于地理空间内的几何关系分析，功能非常强大，具体功能可见<a href="https://turfjs.org/" target="_blank" rel="noopener">Turf.js | Advanced geospatial analysis</a>。</p>
+<p>可是Turf.js目前还没有提供多边形的拆分方法，另外多边形的合并虽然已有<code>union</code>方法，但在实际应用中也无法很好解决部分共边的多边形的合并问题，所以只能在Turf的基础上自行实现符合业务需求的拆分合并功能。</p>
+<h2 id="多边形的拆分"><a href="#多边形的拆分" class="headerlink" title="多边形的拆分"></a>多边形的拆分</h2><h3 id="基础方案"><a href="#基础方案" class="headerlink" title="基础方案"></a>基础方案</h3><p>多边形拆分的核心思想是找到切割点，所以线对面的切割可以简化为线对线的切割。两条线互相切割得到子线段，将子线段互相组合形成多边形。</p>
+<p><img src="./split_1.JPG" alt="多边形拆分基础方案"></p>
+<p>如上图所示，待拆分的多边形记为<code>polygon</code>，切割折线记为<code>splitter</code>。拆分步骤如下：</p>
+<ol>
+<li>面化为线：<code>polygon</code>从起点解开可以形成路径为<code>[p0, p1, p2, p3, p0]</code>的折线<code>pline</code></li>
+<li>线互相切割：Turf提供了<code>lineSplit</code>方法，可以使用点或者线将一条折线切分为几部分。利用该方法可以将<code>pline</code>与<code>splitter</code>互相切割，得到子线段集合<code>pieceCollection</code></li>
+<li>线组合为多边形：Turf提供了<code>polygonize</code>方法，将一组折线互相拼接组合成多边形。利用该方法可以将<code>pieceCollection</code>组合成多个多边形<code>splitedCollection</code></li>
+</ol>
+<p>这方案看似可行，实则有以下问题：</p>
+<ol>
+<li><code>pline</code>与<code>splitter</code>互相切割后得到的切割点不一致，导致<code>polygonize</code>无法将其拼接在一起</li>
+<li><p>切割线在多边形外的部分会形成外部多边形，如下图所示</p>
+<p> <img src="./split_2.PNG" alt="外部多边形"></p>
+</li>
+</ol>
+<h3 id="解决切割点不一致问题"><a href="#解决切割点不一致问题" class="headerlink" title="解决切割点不一致问题"></a>解决切割点不一致问题</h3><p>上文所述第一个切割点不一致的问题是指，使用线A切线B得到的切割点与使用线B切线A得到的切割点不同。</p>
+<p>可以看看Turf的源码是如何实现<code>lineSplit</code>的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">function lineSplit(line, splitter) &#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    var lineType = getType(line);</span><br><span class="line">    var splitterType = getType(splitter);</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    // remove excessive decimals from splitter</span><br><span class="line">    // to avoid possible approximation issues in rbush</span><br><span class="line">    var truncatedSplitter = truncate(splitter, &#123;precision: 7&#125;);</span><br><span class="line"></span><br><span class="line">    switch (splitterType) &#123;</span><br><span class="line">    case &apos;Point&apos;:</span><br><span class="line">        return splitLineWithPoint(line, truncatedSplitter);</span><br><span class="line">    case &apos;MultiPoint&apos;:</span><br><span class="line">        return splitLineWithPoints(line, truncatedSplitter);</span><br><span class="line">    case &apos;LineString&apos;:</span><br><span class="line">    case &apos;MultiLineString&apos;:</span><br><span class="line">    case &apos;Polygon&apos;:</span><br><span class="line">    case &apos;MultiPolygon&apos;:</span><br><span class="line">        return splitLineWithPoints(line, lineIntersect(line, truncatedSplitter));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码中<code>truncate</code>方法是用于保留指定位数的小数，即<code>splitter</code>被限制了精度，所以<code>pline</code>和<code>splitter</code>交换位置后实际计算中的坐标点就发生了变化，导致了不一致的问题。</p>
+<p>如何保证两者一致？可以发现用线B切线A时，实际上是先计算线B与线A的交点，再使用<code>splitLineWithPoints</code>方法用这些交点对线A进行切割。那么先计算好两条线的交点，再用交点分别对两条线进行切割，就可以保证切割点的一致了。实现方法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// truncate</span><br><span class="line">let truncatedSplitter = truncate(splitter, &#123;precision: 7&#125;);</span><br><span class="line"></span><br><span class="line">// compute intersects of two lines</span><br><span class="line">let intersectCollection = lineIntersect(outerLine, truncatedSplitter);</span><br><span class="line">if (intersectCollection.features.length &lt; 2) &#123;</span><br><span class="line">	return null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// transform FeatureCollection[Point] to Feature[MultiPoint]</span><br><span class="line">let intersectCombined = combine(intersectCollection).features[0];</span><br><span class="line"></span><br><span class="line">// split lines with points</span><br><span class="line">let outerPieceCollection = lineSplit(outerLine, intersectCombined);</span><br><span class="line">let splitterPieceCollection = lineSplit(truncatedSplitter, intersectCombined);</span><br><span class="line"></span><br><span class="line">// polygonize pieces</span><br><span class="line">let pieceCollection = featureCollection(outerPieceCollection.features.concat(splitterPieceCollection.features));</span><br><span class="line">let polygonCollection = polygonize(pieceCollection);</span><br></pre></td></tr></table></figure></p>
+<h3 id="解决外部多边形问题"><a href="#解决外部多边形问题" class="headerlink" title="解决外部多边形问题"></a>解决外部多边形问题</h3><p>简单来说只要能筛选出在原大多边形内部的小多边形就好了，Turf提供了<code>booleanContains</code>、<code>booleanDisjoint</code>、<code>booleanWithin</code>等方法用于判断点、线、面的位置关系。但是由于小多边形的部分顶点是在原多边形的边线上计算出来的，且精度有限，位置关系非常微妙，计算时其落在多边形内外都有可能，所以误判率极高。</p>
+<p>但是多边形的形心就没有这个问题了，在当前的场景下，我们无需判断小多边形的每个顶点是否都落在原多边形内，只要其形心落在原多边形内即可。<br><img src="./split_3.PNG" alt="根据形心过滤多边形"></p>
+<p>实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// filter polygons in outer poly</span><br><span class="line">let innerPolygons = polygonCollection.features.filter(polygon =&gt; &#123;</span><br><span class="line">	let center = centroid(polygon);</span><br><span class="line">	return booleanWithin(center, outerPolygon);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="环多边形的拆分"><a href="#环多边形的拆分" class="headerlink" title="环多边形的拆分"></a>环多边形的拆分</h3><p>环多边形是指内部带“洞”的多边形，其拆分时有两种情况，一是拆分线穿过了洞，那么洞就变成了外轮廓，二是拆分线没有穿过洞，那么洞还整个保留。但是这样的思考方式容易引导我们去将洞也进行拆分，然后再与外环拆分后的片段进行拼接。</p>
+<p>还能有更简单的做法，将洞作为遮罩。即在拆分时只对外环多边形进行拆分，在拆分完成之后对小多边形进行遮罩剔除。如下图所示。</p>
+<p><img src="./split_4.PNG" alt="环多边形的拆分"></p>
+<p>遮罩的剔除可以使用Turf的<code>difference</code>方法，具体实现如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let diffedPolygons = innerPolygons.map(polygon =&gt; &#123;</span><br><span class="line">	let diff = polygon;</span><br><span class="line">	featureEach(holeCollection, (hole) =&gt; &#123;</span><br><span class="line">		diff = difference(diff, hole);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	return diff;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>至此即可完成多边形的拆分功能啦。</p>
+<h2 id="多边形的合并"><a href="#多边形的合并" class="headerlink" title="多边形的合并"></a>多边形的合并</h2><h3 id="turf-union"><a href="#turf-union" class="headerlink" title="turf.union"></a>turf.union</h3><p>Turf提供<code>union</code>方法可以对有交集的多边形进行合并，可以处理完全共边、部分压盖、包含的情况，环多边形也是可以处理的。但是在处理部分共边的多边形时，仍然存在点、线关系判定没有容限的问题，导致点被判定在线外而无法完全合并。</p>
+<p>这里先简单介绍一下判断点、线段关系的计算方法，用<code>P</code>表示点，<code>S0</code>和<code>S1</code>两点构成线段，那么首先判断向量<code>P-S0</code>和<code>S1-S0</code>的叉积（叉积表示其构成平行四边形的面积）是否为0，然后判断<code>P</code>是否在<code>S0</code>、<code>S1</code>两点之间。问题就出在叉积是否为0这一步，由于点坐标都是高精度浮点数，叉积很难严格等于0，一般会设定一个较小容限值，只要叉积绝对值小于容限值即可判定为点在线上。</p>
+<p><img src="./union_1.PNG" alt="部分共边时点线关系判定有误"></p>
+<h3 id="部分共边多边形的合并"><a href="#部分共边多边形的合并" class="headerlink" title="部分共边多边形的合并"></a>部分共边多边形的合并</h3><p>已定位合并失败的原因，但是没办法直接修改<code>union</code>的源码，因为Turf在<code>union</code>的实现上其实也使用了外部库<code>martinez-polygon-clipping</code>。不过可以转换思维方式，将部分共边的情况转换为完全共边，再交给<code>union</code>进行合并。这个转换过程我将其称为点注入，将多边形B的顶点注入到多边形A中，即遍历B的顶点进行判断，若其在A的某个线段上且不是线段端头，就将其插入到A的路径中。A与B互相注入顶点之后，所有部分共边的边线都变成完全共边了。</p>
+<p><img src="./union_2.PNG" alt="点注入"></p>
+<p>实现过程如下，其中没有使用<code>booleanPointOnLine</code>，而是基于其实现了<code>isPointOnLine</code>，一方面在点线关系判断时加入了容限值，同时排除了所有的端点，另一方面返回值里不仅包含了<code>bool</code>说明点是否在线上，同时还有<code>index</code>属性说明点在线的哪个线段上，以方便将其插入路径中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 将点注入到线上</span><br><span class="line"> * @param &#123;Feature[LineString]&#125; line </span><br><span class="line"> * @param &#123;FeatureCollection&#125; pointCollection </span><br><span class="line"> */</span><br><span class="line">function injectPointsOnSide(line, pointCollection) &#123;</span><br><span class="line">	let coords = getCoords(line);</span><br><span class="line">	featureEach(pointCollection, (point, index) =&gt; &#123;</span><br><span class="line">		let isOnLine = isPointOnLine(point, line, &#123;</span><br><span class="line">			ignoreVertices: true</span><br><span class="line">		&#125;);</span><br><span class="line">		if (isOnLine.bool) &#123;</span><br><span class="line">			coords.splice(isOnLine.index + 1, 0, getCoord(point));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此即可完成多边形的合并功能啦。</p>
+<h2 id="产品推广"><a href="#产品推广" class="headerlink" title="产品推广"></a>产品推广</h2><p>在JSAPI GL上实现的图形编辑器集成了几何图形的绘制、编辑、删除功能，相较于JSAPI v2功能更加完善且便于使用。该功能将于2月初上线官网，欢迎使用～<br><a href="https://lbs.qq.com/javascript_gl/index.html" target="_blank" rel="noopener">JavaScript API GL | 腾讯位置服务</a></p>
+<p>注：GIF图片较模糊且闪烁，不代表真实效果。<br><img src="./draw_demo_1.gif" alt="draw polyline"></p>
+<p><img src="./draw_demo_2.gif" alt="draw polygon"></p>
+<p><img src="./modify_demo.gif" alt="edit polygon"></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
