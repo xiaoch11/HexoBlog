@@ -56,25 +56,25 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>主页</span>
+                    <span>HOME</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>标签</span>
+                    <span>TAGS</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>存档</span>
+                    <span>ARCHIVES</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>关于</span>
+                    <span>ABOUT</span>
                 </a>
             </li>
             
@@ -93,7 +93,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">搜索</span>
+            <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -116,16 +116,16 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2020-01-07 09:55:56</span></span>
+        <span class="attr">Post：<span>2020-01-07 09:55:56</span></span>
         
-        <span class="attr">标签：/
+        <span class="attr">Tags：/
         
         <a class="tag" href="/tags/#年度总结" title="年度总结">年度总结</a>
         <span>/</span>
         
         
         </span>
-        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
@@ -135,6 +135,7 @@
 <h4 id="WebGL的入门"><a href="#WebGL的入门" class="headerlink" title="WebGL的入门"></a>WebGL的入门</h4><p>WebGL的入门并不容易，光是基础概念篇就足够劝退大多数人了。虽然概念很多，接口很复杂，而且还涉及到各种矩阵运算，但只要理解其核心原理，做一些简单的封装工作，使用起来就会轻松很多。在这个阶段主要是依靠书本网站和demo练习来理解WebGL的工作原理和使用方法。推荐如下：</p>
 <ul>
 <li><a href="https://webglfundamentals.org/webgl/lessons/zh_cn/" target="_blank" rel="noopener">WebGL 理论基础</a></li>
+<li><a href="https://learnopengl-cn.readthedocs.io/zh/latest/" target="_blank" rel="noopener">LearnOpenGL-CN</a></li>
 <li>《WebGL编程指南》</li>
 </ul>
 <p>首先需要明白的是WebGL其实只是光栅化引擎，与Canvas2D API这样的绘图引擎不同的是，它并不能直接理解你要在某位置用某样式绘制某形状这样的命令，它只关心像素的坐标和颜色。由此引出顶点着色器和片元着色器，顶点着色器计算顶点坐标，经过光栅化得到其覆盖的像素片元，片元着色器决定每个片元的颜色值。为了光栅化，WebGL只提供点、线、三角形的绘制，所以复杂形状都需要进行三角剖分。</p>
