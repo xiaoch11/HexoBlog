@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录web学习之路，一步一个脚印">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        JS避坑-如何优雅地遍历对象 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/totoro.jpeg">
+        </div>
+        <div class="name">
+            <i>totoro</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#for…in踩坑复盘"><span class="toc-text">for…in踩坑复盘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#能不能去掉hasOwnProperty？"><span class="toc-text">能不能去掉hasOwnProperty？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工单打脸"><span class="toc-text">工单打脸</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#避坑指南"><span class="toc-text">避坑指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-数组尽量使用forEach进行遍历"><span class="toc-text">1. 数组尽量使用forEach进行遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-对象深拷贝尽量使用解构赋值"><span class="toc-text">2. 对象深拷贝尽量使用解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-遍历键值可以结合Object-entries-和forEach"><span class="toc-text">3. 遍历键值可以结合Object.entries()和forEach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-若要使用break、return提前结束循环，需结合for-of"><span class="toc-text">4. 若要使用break、return提前结束循环，需结合for...of</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        JS避坑-如何优雅地遍历对象
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-06-12 18:13:17</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <blockquote>
+<p>导语：虽然已知for…in会遍历对象原型链上的属性，但心想用于字面量创建的对象应该没有什么大问题，于是便弃hasOwnProperty于不顾，最终被工单教做人了。在修复中总结了几个可以让遍历对象更加优雅的方法。</p>
+</blockquote>
+<h2 id="for…in踩坑复盘"><a href="#for…in踩坑复盘" class="headerlink" title="for…in踩坑复盘"></a>for…in踩坑复盘</h2><h3 id="能不能去掉hasOwnProperty？"><a href="#能不能去掉hasOwnProperty？" class="headerlink" title="能不能去掉hasOwnProperty？"></a>能不能去掉<code>hasOwnProperty</code>？</h3><p><code>for...in</code>常用于遍历对象或者数组，比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const obj = &#123;</span><br><span class="line">    a: 1,</span><br><span class="line">    b: 2</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">for (const key in obj) &#123;</span><br><span class="line">    console.log(key, obj[key]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 输出</span><br><span class="line">// a 1</span><br><span class="line">// b 2</span><br></pre></td></tr></table></figure></p>
+<p>我们都知道<code>for...in</code>会遍历原型链上的属性，所以一般会结合<code>hasOwnProperty</code>来判断属性是否在对象自身上，而不是在原型链上。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for (const key in obj) &#123;</span><br><span class="line">    if (obj.hasOwnProperty(key)) &#123;</span><br><span class="line">        console.log(key, obj[key]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可每次都要多增加一行代码，多一个缩进，实在麻烦，<strong>能不能偷懒不加hasOwnProperty？</strong><br>于是我动起了小心思，使用字面量创建的对象或者数组，不是类的实例，原型链上干干净净的，那遍历的时候也没必要判断了吧。于是就在遍历字面量对象时放心大胆地把<code>hasOwnProperty</code>抛弃了。</p>
+<h3 id="工单打脸"><a href="#工单打脸" class="headerlink" title="工单打脸"></a>工单打脸</h3><p>我负责的产品是API，用户在自己的页面应用中引入使用。某天，有用户反馈若同时引入我家API和另一个脚本库就会引发报错：</p>
+<p><img src="./error.png" alt="报错"></p>
+<p>调试发现报错发生在：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for (const key in renderLayers) &#123;</span><br><span class="line">    const layer = renderLayers[key];</span><br><span class="line">    if (!layer.isHidden()) &#123;</span><br><span class="line">        // ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>renderLayers</code>是一个数组，这里原本是遍历可渲染图层进行操作，而图层对象都有<code>isHidden</code>方法，为何报错呢？原因是用户另引入的脚本对<code>Object</code>、<code>Array</code>、<code>String</code>等基础引用类型的原型链做了扩展，加入了一些方法。所以在<code>for...in</code>遍历<code>renderLayers</code>时，也遍历到了<code>addRange</code>、<code>clear</code>这些属性，<code>layer</code>则赋值为一个<code>function</code>，而不是图层对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Object.extend = function(dest, source, replace) &#123;</span><br><span class="line">    for(var prop in source) &#123;</span><br><span class="line">        if(replace == false &amp;&amp; dest[prop] != null) &#123; continue; &#125;</span><br><span class="line">        dest[prop] = source[prop];</span><br><span class="line">    &#125;</span><br><span class="line">    return dest;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Object.extend(Array.prototype, &#123;</span><br><span class="line">    addRange: function(items) &#123;</span><br><span class="line">        if(items.length &gt; 0) &#123;</span><br><span class="line">            for(var i=0; i &lt; items.length; i++) &#123;</span><br><span class="line">                this.push(items[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    clear: function() &#123;</span><br><span class="line">        this.length = 0;</span><br><span class="line">        return this;</span><br><span class="line">    &#125;,</span><br><span class="line">    // ...</span><br><span class="line">&#125;, false);</span><br></pre></td></tr></table></figure></p>
+<h2 id="避坑指南"><a href="#避坑指南" class="headerlink" title="避坑指南"></a>避坑指南</h2><p>如上所述，只能开始内部大清理，所有使用<code>for...in</code>而没有带<code>hasOwnProperty</code>的地方都需要进行改造。除了加上<code>hasOwnProperty</code>进行判断之外，视具体情况还可以使用以下方法，让你的代码更加优雅：</p>
+<h3 id="1-数组尽量使用forEach进行遍历"><a href="#1-数组尽量使用forEach进行遍历" class="headerlink" title="1. 数组尽量使用forEach进行遍历"></a>1. 数组尽量使用<code>forEach</code>进行遍历</h3><p>比如引发报错的这一段，<code>renderLayers</code>是一个数组，直接使用<code>forEach</code>进行遍历即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">renderLayers.filter(layer =&gt; !layer.isHidden()).forEach(layer =&gt; &#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-对象深拷贝尽量使用解构赋值"><a href="#2-对象深拷贝尽量使用解构赋值" class="headerlink" title="2. 对象深拷贝尽量使用解构赋值"></a>2. 对象深拷贝尽量使用解构赋值</h3><p><code>for...in</code>可遍历对象属性实现一一赋值完成简单的对象深拷贝，这种操作可以用解构赋值来实现，更简单。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function copy(obj) &#123;</span><br><span class="line">    return &#123;...obj&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj = &#123;</span><br><span class="line">    a: 1</span><br><span class="line">&#125;;</span><br><span class="line">const objCopy = copy(obj);</span><br><span class="line">console.log(objCopy);</span><br><span class="line">// 输出：&#123;a: 1&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-遍历键值可以结合Object-entries-和forEach"><a href="#3-遍历键值可以结合Object-entries-和forEach" class="headerlink" title="3. 遍历键值可以结合Object.entries()和forEach"></a>3. 遍历键值可以结合<code>Object.entries()</code>和<code>forEach</code></h3><p><code>Object.entries()</code>返回对象所有键值对组成的数组，再结合<code>forEach</code>即可完成遍历。若只是遍历对象的键或者值，可以使用<code>Object.keys()</code>和<code>Object.values()</code>。<br>在改造过程中，可以抽象出一个<code>forIn</code>方法作为工具函数，这样多处调用就可以省掉不少冗余代码啦~<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function forIn(obj, callback) &#123;</span><br><span class="line">    Object.entries(obj).forEach(entry =&gt; &#123;</span><br><span class="line">        callback(...entry);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj = &#123;</span><br><span class="line">    a: 1</span><br><span class="line">&#125;;</span><br><span class="line">forIn(obj, (key, value) =&gt; &#123;</span><br><span class="line">    console.log(key, value);</span><br><span class="line">&#125;);</span><br><span class="line">// 输出：a 1</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-若要使用break、return提前结束循环，需结合for-of"><a href="#4-若要使用break、return提前结束循环，需结合for-of" class="headerlink" title="4. 若要使用break、return提前结束循环，需结合for...of"></a>4. 若要使用<code>break</code>、<code>return</code>提前结束循环，需结合<code>for...of</code></h3><p>方法3虽好，但使用<code>forEach</code>没办法中断循环，这时候可以使用<code>for...of</code>，也是非常简洁的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const obj = &#123;</span><br><span class="line">    a: 1,</span><br><span class="line">    b: 2</span><br><span class="line">&#125;;</span><br><span class="line">for (let [key, value] of Object.entries(obj)) &#123;</span><br><span class="line">    if (value &gt; 1) &#123;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    console.log(key, value);</span><br><span class="line">&#125;</span><br><span class="line">// 输出：a 1</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
